@@ -1,0 +1,130 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#includeEtc "caseDicts/mesh/generation/snappyHexMeshDict.cfg"
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    water
+    {
+        type triSurfaceMesh;
+        file "water.stl";
+
+        regions
+        {
+            inlet    { name inlet;     }
+            outlet    { name outlet;    }
+            water_wall  { name water_wall;}
+        }
+    }
+
+    inner_pipe
+    {
+        type triSurfaceMesh;
+        file "inner_pipe.stl";
+        regions
+        {
+         	inner_pipe_outer_face {name inner_pipe_outer_face; }
+                inner_pipe_axial_face {name inner_pipe_axial_face;}
+		inner_pipe_inner_face {name inner_pipe_inner_face;}
+
+            
+        }
+ 
+
+    }
+
+   
+};
+
+castellatedMeshControls
+{
+    refinementSurfaces
+    {
+        inner_pipe
+        {
+            level (0 0);
+	    faceZone inner_pipe;
+            cellZone carbon_steel;
+            mode        insidePoint;
+            insidePoint (0.49565 -0.000054 0.025318);
+            regions
+            {
+               inner_pipe_outer_face { level (0 0); patchInfo { type wall; } }
+               inner_pipe_axial_face  { level (0 0); patchInfo { type wall; } }
+               inner_pipe_inner_face {level (0 0); patchInfo { type wall; }}
+
+
+               
+            }
+        }
+
+
+        water
+        
+        {
+            level (0 0);
+            faceZone water;
+            cellZone water;
+            mode        insidePoint;
+            insidePoint (0.49565 -0.00544 -0.004542);
+            regions
+            {
+                inlet { level (0 0); patchInfo { type patch; } }
+                outlet  { level (0 0); patchInfo { type patch; } }
+                water_wall { level (0 0); patchInfo { type wall; } }
+
+            }
+
+        }
+
+    }
+
+    nCellsBetweenLevels 1;
+    insidePoint (0.49565 -0.000363 -0.004131);
+     refinementRegions
+    {
+
+        inner_pipe
+        {
+            mode inside;
+            levels ((0 0));
+        }
+
+        water
+        {
+            mode inside;
+            levels ((0 0));
+        }
+    }
+
+  }
+
+addLayersControls
+{
+    relativeSizes       true;
+    minThickness        1;
+    finalLayerThickness 1;
+    expansionRatio      1;
+    layers
+    {}
+}
+
+// ************************************************************************* //

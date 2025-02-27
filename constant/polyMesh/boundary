@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+8
+(
+    inlet
+    {
+        type            patch;
+        nFaces          1164;
+        startFace       719040;
+    }
+    water_wall
+    {
+        type            mappedWall;
+        nFaces          10205;
+        startFace       720204;
+         sampleMode      nearestPatchFace;
+        sampleRegion    inner_pipe;
+        samplePatch     inner_face;
+
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          1444;
+        startFace       730409;
+    }
+    strut_face
+    {
+        type            wall;
+        nFaces          7274;
+        startFace       731853;
+    }
+    outer_face
+    {
+        type            wall;
+        nFaces          65436;
+        startFace       739127;
+    }
+    inner_face
+    {
+        type            mappedWall;
+        nFaces          13187;
+        startFace       804563;
+        sampleMode      nearestPatchFace;
+        sampleRegion    water;
+        samplePatch     water_wall;
+
+    }
+    inlet_pipe
+    {
+        type            wall;
+        nFaces          1269;
+        startFace       817750;
+    }
+    outlet_pipe
+    {
+        type            wall;
+        nFaces          1292;
+        startFace       819019;
+    }
+)
+
+// ************************************************************************* //
